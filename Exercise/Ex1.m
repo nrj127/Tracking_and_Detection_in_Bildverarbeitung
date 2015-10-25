@@ -3,20 +3,17 @@
 I = imread('lena.gif') ; % read image
 [rows,columns] = size(I) ;
 
-kernel = ones(3)/9;
+kernel = ones(11);
+[kr, kc] = size(kernel);
 
-[kr kc] = size(kernel);
-
-padded_image = do_padding(I,kernel,'mirror');
-
-convoluted_image = convolution(padded_image,kernel);
-
+convoluted_image = convolution(I,kernel,'mirror');
+imwrite(uint8(convoluted_image) , strcat('convolved_img_mirror.jpg'));
 figure(1)
 imshow(uint8(convoluted_image))
+title('Mean Filter with Mirror treatment')
 
-padded_image = do_padding(I,kernel,'border');
-
-convoluted_image = convolution(padded_image,kernel);
-
+convoluted_image = convolution(padded_image,kernel,'border');
+imwrite(uint8(convoluted_image) , strcat('convolved_img_border.jpg'));
 figure(2)
 imshow(uint8(convoluted_image));
+title('Mean Filter with Border treatment')

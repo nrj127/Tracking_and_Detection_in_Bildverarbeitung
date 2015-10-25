@@ -18,5 +18,5 @@ if strcmp('border',treatment)
     result = [repmat(result(:,1), [1,numberofCols]), result,repmat(result(:,n),[1,numberofCols])];
     
 end
-
+imwrite(result , strcat('padded_img_',treatment,'.jpg'));
 end
