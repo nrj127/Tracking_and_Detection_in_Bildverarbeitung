@@ -24,7 +24,7 @@ for rows = 1 + n_rowsPadded : paddedImgR - n_rowsPadded
       %for k = 1:(kr*kc)
        %sumconv = sumconv+ (tempConv(k) * kernel(k));
       %end
-      convResult(rows - n_rowsPadded ,cols - n_colPadded) = int8(sumconv);
+      convResult(rows - n_rowsPadded ,cols - n_colPadded) = sumconv;
       %sumconv = 0;
     end
 end
