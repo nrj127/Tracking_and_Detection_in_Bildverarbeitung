@@ -5,8 +5,8 @@ function [ result ] = do_padding( I,kernel,treatment )
 [m,n]   = size(I);
 [kr, kc] = size(kernel);
 
-numberofRows =   30  %floor(kr/2);
-numberofCols =    30 %floor(kc/2);
+numberofRows =   floor(kr/2);
+numberofCols =   floor(kc/2);
 
 if strcmp('mirror',treatment)
   result = [fliplr(I(:,1:numberofCols)),I,fliplr(I(:,n-numberofCols+1:n))];
