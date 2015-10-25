@@ -1,4 +1,4 @@
-sigma = 1; % try with 3 also
+sigma = 3; % try with 3 also
 I = imread('lena.gif');
 
 [rows columns] = size(I);
