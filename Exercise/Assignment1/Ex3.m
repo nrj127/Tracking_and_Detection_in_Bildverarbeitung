@@ -1,4 +1,3 @@
-
 I = imread('lena.gif');
 
 % Creating the derivative filters

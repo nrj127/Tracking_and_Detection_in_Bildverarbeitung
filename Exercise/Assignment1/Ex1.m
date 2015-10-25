@@ -3,7 +3,7 @@
 I = imread('lena.gif') ; % read image
 [rows,columns] = size(I) ;
 
-kernel = ones(11);
+kernel = ones(3);
 [kr, kc] = size(kernel);
 
 figure(3)
