@@ -11,7 +11,7 @@ imshow(I)
 title('Original Image')
 
 figure(4)
-imshow(uint8(convoluted_image*127))
+imshow(uint8(convoluted_image*128))
 title('convoluted image with 2D Gaussian Kernel')
 
 kernelyDirection = GaussianSeparate(sigma,'yDirection');
