@@ -17,7 +17,7 @@ for rows = 1 + n_rowsPadded : paddedImgR - n_rowsPadded
     for cols = 1 + n_colPadded : paddedImgC - n_colPadded
         roi = double(padded_image(rows - n_rowsPadded : rows + n_rowsPadded , cols - n_colPadded : cols + n_colPadded));
         roi = roi(:);
-        sumconv = mean(kernel.*roi);
+        sumconv = sum(kernel.*roi);
         
        
      %tempConv =   ExtractROI(padded_image(rows:rows+2*floor(kr/2),cols:cols+2*floor(kc/2)));
