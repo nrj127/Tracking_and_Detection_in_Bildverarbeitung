@@ -15,7 +15,7 @@ imwrite(uint8(dY_I),'y-derivative.png');
 %Computing gradient magnitude and orientation
 grad_I = (dX_I.^2 + dY_I.^2 ).^0.5;
 mag = grad_I
-orientation = atan(double(dY_I./dX_I));
+orientation = atan(dY_I./dX_I);
 orn = orientation;
 imwrite(uint8(grad_I),'grad_magnitude.png');
 imwrite(uint8(orientation*128),'orientation.png');
@@ -37,11 +37,11 @@ title('Gradient X')
 subplot(2,2,2)
 imshow(IY)
 title('Gradient Y')
-subplot(2,2,3)
+subplot(1,2,3)
 imshow(uint8(mag))
 title('Magnitude')
-subplot(2,2,4)
-imshow(orn)
+subplot(1,2,4)
+imshow(uint8(orn))
 title('Orientation')
 
 suptitle('Ex3')

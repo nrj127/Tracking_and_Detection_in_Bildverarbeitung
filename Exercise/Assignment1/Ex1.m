@@ -6,18 +6,24 @@ I = imread('lena.gif') ; % read image
 kernel = ones(3);
 [kr, kc] = size(kernel);
 
-figure(3)
-imshow(I)
+figure(1)
 
+subplot(2,2,[1 2])
+imshow(I)
+title('Original image');
 
 convoluted_image = convolution(I,kernel,'mirror');
 imwrite(uint8(convoluted_image) , strcat('convolved_img_mirror.jpg'));
-figure(1)
+%figure(1)
+subplot(2,2,3)
 imshow(uint8(convoluted_image))
-title('Mean Filter with Mirror treatment')
+title(' Mirror treatment')
 
 convoluted_image = convolution(I,kernel,'border');
 imwrite(uint8(convoluted_image) , strcat('convolved_img_border.jpg'));
-figure(2)
+%figure(2)
+subplot(2,2,4)
 imshow(uint8(convoluted_image));
-title('Mean Filter with Border treatment')
+title('Border treatment')
+suptitle('mean filter 3x3')
+
