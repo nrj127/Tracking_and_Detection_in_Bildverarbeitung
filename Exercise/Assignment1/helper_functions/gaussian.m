@@ -3,6 +3,6 @@ function [ G ] = gaussian( u,v,sigma )
 %   Detailed explanation goes here
 G = (1/(2*pi*sigma^2))*exp(-0.5*(u.^2 + v.^2)/sigma^2);
 %G = exp(-(u.^2 + v.^2)/(2*sigma^2));
-%G = 1/(sum(G(:))) * G
+G = G./(sum(G(:))); %Normalization
 end
 

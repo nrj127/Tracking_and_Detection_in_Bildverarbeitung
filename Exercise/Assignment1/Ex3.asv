@@ -1,4 +1,3 @@
-addpath('helper_functions');
 I = imread('lena.gif');
 
 % Creating the derivative filters
@@ -17,7 +16,7 @@ imwrite(uint8(dY_I),'y-derivative.png');
 grad_I = (dX_I.^2 + dY_I.^2 ).^0.5;
 orientation = atan(double(dY_I./dX_I));
 imwrite(uint8(grad_I),'grad_magnitude.png');
-imwrite(orientation,'orientation.png');
+imwrite(uint8(orientation),'orientation.png');
 
 figure(10)
 subplot(2,2,1)
@@ -30,7 +29,7 @@ subplot(2,2,3)
 imshow(uint8(grad_I))
 title('Magnitude')
 subplot(2,2,4)
-imshow(orientation)
+imshow(gra)
 title('Orientation')
 
 suptitle('Ex3')

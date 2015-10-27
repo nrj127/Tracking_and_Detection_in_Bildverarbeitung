@@ -1,9 +1,10 @@
 % matlab code to find convolution of an image using mean filter
-
+addpath('helper_functions');
 I = imread('lena.gif') ; % read image
 [rows,columns] = size(I) ;
 
-kernel = ones(3);
+kernel = ones(9);
+kernel = kernel./sum(sum(kernel)); %Normalization
 [kr, kc] = size(kernel);
 
 figure(1)
