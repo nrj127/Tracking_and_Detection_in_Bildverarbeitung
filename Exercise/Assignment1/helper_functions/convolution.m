@@ -1,6 +1,7 @@
 function [ convoluted_image ] = convolution( I,kernel, border_treatment )
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
+
 padded_image = do_padding(I,kernel,border_treatment);
 
 [kr, kc] = size(kernel);
@@ -16,17 +17,9 @@ convResult = zeros(paddedImgR-2*n_rowsPadded ,paddedImgC -2*n_colPadded );
 for rows = 1 + n_rowsPadded : paddedImgR - n_rowsPadded
     for cols = 1 + n_colPadded : paddedImgC - n_colPadded
         roi = double(padded_image(rows - n_rowsPadded : rows + n_rowsPadded , cols - n_colPadded : cols + n_colPadded));
-        %roi = roi(:);
         sumconv = kernel.*roi;
         sumconv = sum(sumconv(:));
-        
-       
-     %tempConv =   ExtractROI(padded_image(rows:rows+2*floor(kr/2),cols:cols+2*floor(kc/2)));
-      %for k = 1:(kr*kc)
-       %sumconv = sumconv+ (tempConv(k) * kernel(k));
-      %end
-      convResult(rows - n_rowsPadded ,cols - n_colPadded) = sumconv;
-      %sumconv = 0;
+        convResult(rows - n_rowsPadded ,cols - n_colPadded) = sumconv;
     end
 end
 
