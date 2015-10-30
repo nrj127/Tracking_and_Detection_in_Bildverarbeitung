@@ -1,0 +1,6 @@
+addpath('Helper Functions');
+I = imread('bb.jpg') ; % read image
+[rows,columns] = size(I) ;
+
+roi_siz
+medianFiltered = median_filter(I,roi_size)

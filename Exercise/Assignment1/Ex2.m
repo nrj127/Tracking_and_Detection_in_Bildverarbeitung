@@ -79,8 +79,9 @@ imshow(uint8(convoluted_image_final4)) % Original Image
 
 title(strcat('2 X 1D Gaussian sigma = 3'))
 hold off
-error1 = (convoluted_image1 - convoluted_image_final).^2;
+error1 = (convoluted_image1 - convoluted_image_final3).^2;
 error3 = (convoluted_image2 - convoluted_image_final4).^2;
-
+min(error1(:))
+min(error3(:))
 %error1 = sum(error1(:))
 %error3 = sum(error3(:))
