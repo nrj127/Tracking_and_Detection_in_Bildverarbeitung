@@ -1,6 +1,6 @@
 function [ filteredImage ] = bilateralFilter( I,sigma_d,sigma_r,treatment )
 
-kernel = ones(sigma_d*3);
+kernel = ones(sigma_d);
 padded_image = do_padding(I,kernel,treatment);
 
 [kr, kc] = size(kernel);
@@ -28,9 +28,9 @@ for rows = 1 + n_rowsPadded : paddedImgR - n_rowsPadded
         roi = double(padded_image(rows - n_rowsPadded : rows + n_rowsPadded , cols - n_colPadded : cols + n_colPadded));
         pixel = double(padded_image(rows,cols));
         pixel_matrix = repmat(pixel,[kr kc]);
-        range_filter = exp(-0.5*(((pixel_matrix-roi)/sigma_r).^2));
-        normalizer = sum(sum(domain_filter.*range_filter));
-        filteredImage(rows - n_rowsPadded ,cols - n_colPadded) = (sum(sum(roi.*domain_filter.*range_filter)))/normalizer;
+        rangeKernel = exp((-0.5*((pixel_matrix-roi)/sigma_r).^2) );
+        normalizer
+        filteredImage(rows - n_rowsPadded ,cols - n_colPadded) = sum(sum(rangeKernel.* domain_filter.*roi)) * 1/sum(sum(rangeKernel.*domain_filter));
     end
 end
 
