@@ -1,62 +1,40 @@
-function [ output_args ] = Harris_Detector(I,n,so,k,alpha,t )
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+function [ ind ] = Harris_Detector(I,n,s0,k,alpha,threshold )
 
-sn = k^n*so;
-s = sn;
+sigma_in = k^n*s0;
+sigma_dn = sigma_in;
 
-%I = double(I);
-rows = size(I,1);
-columns = size(I,2);
+%[rows, columns]  = size(I);
 
-% creating the derivative filters
-radius = 3;
-range = -floor(radius/2):floor(radius/2);
-[dX dY] = meshgrid(range,range);
+%%%% Calculations for the second moment matrix %%%%%%
+%1. Creating the gaussian Kernals
+g_dn = fspecial('gaussian',[round(3*sigma_dn),round(3*sigma_dn)],sigma_dn); 
+g_in = fspecial('gaussian',[round(3*sigma_in),round(3*sigma_in)],sigma_in); 
 
-gaussian_kernel_dn = Gaussian2D(s);
-gaussian_kernel_in = Gaussian2D(sn);
+%2. Smoothning with the gaussian kernal
+I_g_dn = imfilter(I, g_dn);
 
-%G_x = conv2(dX,gaussian_kernel_dn,'same');
-%G_y = conv2(dY,gaussian_kernel_dn,'same');
-%I_x = conv2(G_x,double(I),'same');
-%I_y = conv2(G_y,double(I),'same');
+%3. Getting the gradient of the smoothened image
+[Lx_sigma_dn, Ly_sigma_dn] = imgradientxy(I_g_dn);
 
-G_x = conv2(dX,gaussian_kernel_dn,'same');
-G_y = conv2(dY,gaussian_kernel_dn,'same');
-I_x = conv2(double(I),(G_x),'same');
-I_y = conv2(double(I),(G_y),'same');
+%4. Computing the structure tensor
+L_x2_sigma_dn = Lx_sigma_dn.^2;
+L_y2_sigma_dn = Ly_sigma_dn.^2;
+LxLy = Lx_sigma_dn.*Ly_sigma_dn;
 
+m11 = imfilter(L_x2_sigma_dn, g_in);
+m22 = imfilter(L_y2_sigma_dn, g_in);
+m12 = imfilter(LxLy, g_in);
+m21 = imfilter(LxLy, g_in);
 
-L_x2 = I_x.^2;
-L_y2 = I_y.^2;
-LxLy = I_x.*I_y;
+R = (m11.*m22 - m21.*m12) - alpha*((m11+m22).^2);
 
+ind = find(R<=threshold);
+R(ind) = 0;
 
-L_matrix = [L_x2 LxLy;LxLy L_y2];
+% Find local maximum
+R = nlfilter(R, [5 5], @(x) all(x(13) > x([1:12 14:25])) );
 
-temp = s^2*gaussian_kernel_in;
-
-M = conv2(L_matrix,temp,'same');
-%det_M = det(M);
-%trace_M = trace(M);
-
-%R = det_M - alpha*(trace_M.^2);
-
-R = (L_x2.*L_y2 - LxLy.^2) - alpha*(L_x2+L_y2).^2;
+ind = find(R == 1);
 
 
-
-for x = 1:rows
-    for y = 1:columns
-        if (R>t)
-            I(x,y) = R;
-        end
-    end
-end
-
-result = I > imdilate(I, [1 1 1;1 0 1; 1 1 1]);
-figure, imshow(I);
-figure , imagesc(result);
-end
 

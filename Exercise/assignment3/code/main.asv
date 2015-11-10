@@ -1,0 +1,18 @@
+addpath('helper_functions');
+
+im = imread('checkerboard_tunnel.jpg');
+I = rgb2gray(double(im));
+n = 0;
+k = 1.2;
+s0 = 1.5;
+alpha = 0.04;
+threshold = 0.2;
+ind = Harris_Detector(I,n,s0,k,alpha,threshold);
+
+
+figure, imshow(uint8(im));
+hold on;
+for element = 1:size(ind)
+        [x, y] = ind2sub( size(im), ind(element));
+        plot(y, x, 'o');
+end

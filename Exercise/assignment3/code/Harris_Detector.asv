@@ -1,0 +1,55 @@
+function [ output_args ] = Harris_Detector(I,n,so,k,alpha,t )
+
+sn = k^n*so;
+s = sn;
+
+[rows, columns]  = size(I);
+
+%%%% Calculations for the second moment matrix %%%%%%
+%1. Creating the gaussian Kernals
+g_dn = fspecial('gaussian',[3,3],sigma_dn); 
+g_in = fspecial('gaussian',[3,3],sigma_in); 
+
+%2. Smoothning with the gaussian kernal
+I_g_dn = imfilter(I, g_dn);
+I_g_in = imfilter(I, g_in);
+
+%3. Getting the gradient of the smoothened image
+[Lx_sigma_dn, Ly_sigma_dn] = imgradientxy(I_g_dn);
+
+%4. Computing the structure tensor
+L_x2_sigma_dn = Lx_sigma_dn.^2;
+L_y2_sigma_dn = Ly_sigma_dn.^2;
+LxLy = Lx_sigma_dn.*Ly_sigma_dn;
+
+m11 = imfilter(L_x2_sigma_dn, g_in);
+m22 = imfilter(L_y2_sigma_dn, g_in);
+
+
+L_matrix = [L_x2 LxLy;LxLy L_y2];
+
+temp = s^2*gaussian_kernel_in;
+
+M = conv2(L_matrix,temp,'same');
+%det_M = det(M);
+%trace_M = trace(M);
+
+%R = det_M - alpha*(trace_M.^2);
+
+R = (L_x2.*L_y2 - LxLy.^2) - alpha*(L_x2+L_y2).^2;
+
+
+
+for x = 1:rows
+    for y = 1:columns
+        if (R>t)
+            I(x,y) = R;
+        end
+    end
+end
+
+result = I > imdilate(I, [1 1 1;1 0 1; 1 1 1]);
+figure, imshow(I);
+figure , imagesc(result);
+end
+
