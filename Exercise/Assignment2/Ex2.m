@@ -1,9 +1,9 @@
 I = imread('bb.jpg');
 I = rgb2gray(I);
-sigma_d =15; sigma_r = 15;
+sigma_d =3; sigma_r = 3;
 bilateralFiltered = bilateralFilter(I,sigma_d,sigma_r,'mirror');
 
-figure(1)
+figure(3)
 subplot(1,2,1)
 imshow(uint8(I)) % Original
 title('Original')
