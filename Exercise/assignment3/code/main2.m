@@ -1,8 +1,8 @@
 addpath('helper_functions');
 
 %im = imread('sample2.jpg');
-%im = imread('checkerboard_tunnel.png');
-im = imread('test.pgm');
+im = imread('checkerboard_tunnel.png');
+%im = imread('test.pgm');
 [~, ~, numberOfColorChannels] = size(im);
 if(numberOfColorChannels ==3)
     im = rgb2gray(im);

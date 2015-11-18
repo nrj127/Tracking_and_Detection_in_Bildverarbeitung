@@ -32,6 +32,7 @@ ind = find(R<=threshold);
 R(ind) = 0;
 
 % Find local maximum
+%R = nlfilter(R, [5 5], @(x) all(x(13) > x([1:12 14:25])) );
 R = nlfilter(R, [5 5], @(x) all(x(13) > x([1:12 14:25])) );
 
 ind = find(R == 1);
