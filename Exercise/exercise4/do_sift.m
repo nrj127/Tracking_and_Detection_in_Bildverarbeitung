@@ -26,16 +26,16 @@ title('test image ');
 
 [matches,scores] = vl_ubcmatch(d1,d2);
 
-X1 = f1(1:2,matches(1,:))'; %X1(3,:) = 1;
-X2 = f2(1:2,matches(2,:))'; %X2(3,:) = 1;
+X2 = f1(1:2,matches(1,:))'; %X1(3,:) = 1;
+X1 = f2(1:2,matches(2,:))'; %X2(3,:) = 1;
 
 figure(2)
-showMatchedFeatures(test_image,object_image,X2,X1,'montage');
+showMatchedFeatures(test_image,object_image,X1,X2,'montage');
 
 
 [~,inlier_obj, inlier_test]= estimateGeometricTransform(X1,X2,'similarity');
 figure(3)
-showMatchedFeatures(test_image,object_image,inlier_test,inlier_obj,'montage');
+showMatchedFeatures(test_image,object_image,inlier_obj,inlier_test,'montage');
 
 
 
