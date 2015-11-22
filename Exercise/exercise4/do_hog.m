@@ -13,11 +13,12 @@ object_image = imresize(object_image,1/8);
 object_image = single(rgb2gray(object_image));
 
 
-hog = vl_hog(object_image,cell_size);
+hog = vl_hog(object_image,cell_size); % scene image
 image = vl_hog('render', hog);
 scale = 0.3;
 
-
+%figure(12)
+%imshow(image)
 
 
 bs = 0;
@@ -25,18 +26,21 @@ test_image = imresize(test_image,1/4);
 test_image = single(rgb2gray(test_image));
 
 
-hog1 = vl_hog(test_image,cell_size);
+hog1 = vl_hog(test_image,cell_size); % test image
 image1 = vl_hog('render', hog1);
+
+%figure(13)
+%imshow(image1)
+
 
 scores = vl_nnconv(hog1,hog,[]);
 max_score = max(max(scores));
 
 if(max_score > bs)
-    bs = max_score;
-    bs1 = scores;
-    bi = image1;
-    bh =   hog ;
-    bi = test_image;
+     bs = max_score;
+     bs1 = scores;
+     bh =   hog ;
+     bi = test_image;
 end
 
 
