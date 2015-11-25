@@ -1,49 +1,56 @@
-temp_new = [];
-for i= 1:10
-    temp = num2str(i);
-    temp_new = [temp_new temp];
-    
-end
-temp1 = 'Tree';
-temp2 = '.txt';
+I = double(imread('2007_000032.jpg'));
 
-for i = 1:10
-    file(i) = strcat(temp1,temp_new(i),temp2);
-end
+[ h, w, nc ] = size(I);
+[II_b, II_g, II_r] = integral_image(I);
 
-fileId0 = fopen('Tree0.txt','r')
-fileId1 = fopen('Tree1.txt','r')
-fileId2 = fopen('Tree2.txt','r')
-fileId3 = fopen('Tree3.txt','r')
-fileId4 = fopen('Tree4.txt','r')
-fileId5 = fopen('Tree5.txt','r')
-fileId6 = fopen('Tree6.txt','r')
-fileId7 = fopen('Tree7.txt','r')
-fileId8 = fopen('Tree8.txt','r')
-fileId9 = fopen('Tree9.txt','r')
+s=2;
+sumPredX = zeros(size(I(:,:)));
+sumPredY = zeros(size(I(:,:)));
 
-formatSpec = '%f';
+for treeIndex = 1:length(fileList(:,1))
+    intNodes = internal_nodes(treeIndex);
+    for x = 2:w
+        for y = 2:h
+            for k = 1:intNodes
+            xOff0 = x0{1,treeIndex}(k,1);
+            yOff0 = y0{1,treeIndex}(k,1);
 
-tree0 =  textscan(fileId0,'%f %f %f %f %f %f %f %f %f %f %f');
-tree1 =  textscan(fileId1,'%f %f %f %f %f %f %f %f %f %f %f');
-tree2 =  textscan(fileId2,'%f %f %f %f %f %f %f %f %f %f %f');
-tree3 =  textscan(fileId3,'%f %f %f %f %f %f %f %f %f %f %f');
-tree4 =  textscan(fileId4,'%f %f %f %f %f %f %f %f %f %f %f');
-tree5 =  textscan(fileId5,'%f %f %f %f %f %f %f %f %f %f %f');
-tree6 =  textscan(fileId6,'%f %f %f %f %f %f %f %f %f %f %f');
-tree7 =  textscan(fileId7,'%f %f %f %f %f %f %f %f %f %f %f');
-tree8 =  textscan(fileId8,'%f %f %f %f %f %f %f %f %f %f %f');
-tree9 =  textscan(fileId9,'%f %f %f %f %f %f %f %f %f %f %f');
+            xOff1 = x1{1,treeIndex}(k,1);
+            yOff1 = y1{1,treeIndex}(k,1);
 
-tree0_nodes = tree0{1,1}(1,1);
-tree1_nodes= tree1{1,1}(1,1);
-tree2_nodes= tree2{1,1}(1,1);
-tree3_nodes= tree3{1,1}(1,1);
-tree4_nodes= tree4{1,1}(1,1);
-tree5_nodes= tree5{1,1}(1,1);
-tree6_nodes= tree6{1,1}(1,1);
-tree7_nodes= tree7{1,1}(1,1);
-tree8_nodes= tree8{1,1}(1,1);
-tree9_nodes= tree9{1,1}(1,1);
+            z = z0{1,treeIndex}(k,1);
+            e0 = b(II_b, II_g, II_r , x + xOff0 , y + yOff0 , z , s, w , h);
+            e1 = b(II_b, II_g, II_r , x + xOff1 , y + yOff1 , z , s, w , h);
+
+            eval = e0-e1;
+            predX = 0;
+            predY=0;
+                if eval < threshold{1,treeIndex}(k,1)
+                    %move to left child
+                    leftChild = cl{1,treeIndex}(k,1);
+                    if( leftChild < 1)
+                        leftChild = abs(leftChild);
+                    end
+                        predX = px{1,treeIndex}(leftChild,1);
+                        predY = py{1,treeIndex}(leftChild,1);                    
+                else
+                    %move to right child
+                    rightChild = cr{1,treeIndex}(k,1);
+                    if( rightChild < 1)
+                        rightChild = abs(rightChild);
+                    end
+                        predX = px{1,treeIndex}(rightChild,1);
+                        predY = py{1,treeIndex}(rightChild,1);
+                    
+                end
+                
+                sumPredX(y,x) = sumPredX(y,x) + predX;
+                sumPredY(y,x) = sumPredY(y,x) + predY;
+            end
+        end
+    end
+end 
+
+fprintf('DOne');
 
 

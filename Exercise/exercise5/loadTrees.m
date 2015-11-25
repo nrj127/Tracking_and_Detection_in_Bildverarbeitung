@@ -1,5 +1,6 @@
+%LOADTREES Summary of this function goes here
+%   Detailed explanation goes here
 clear all;
-
 cd Trees;
 fileList = ls('Tree*.txt');
 cd ..
@@ -35,6 +36,6 @@ end
 internal_nodes = (cell2mat(internal_nodes));
 internal_nodes = internal_nodes';
 
-%i c L c R t x 0 y 0 z 0 x 1 y 1 z 1 s
+
 
 
