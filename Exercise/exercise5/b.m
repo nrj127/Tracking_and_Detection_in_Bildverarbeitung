@@ -12,38 +12,14 @@ if z == 2 || z == 3
     II = II_r;
 end
 
-xPlusS = x+s;
-xMinusS = x-s;
-yPlusS = y+s;
-yMinusS = y-s;
+o = floor(s/2);
 
-if xPlusS > height
-    xPlusS = height;
-end
-if xPlusS < 1
-    xPlusS = 1;
-end
-if xMinusS > height
-    xMinusS = height;
-end
-if xMinusS < 1
-    xMinusS = 1;
-end
-
-if yPlusS > width
-    yPlusS = width;
-end
-if yPlusS < 1
-    yPlusS = 1;
-end
-if yMinusS > width
-    yMinusS = width;
-end
-if yMinusS < 1
-    yMinusS = 1;
-end
-
-e = II(xPlusS , yPlusS) - II(xMinusS , yPlusS) - II(xPlusS, yMinusS) + II(xMinusS,yMinusS);
+x1 = min(max(x-o, 1), width);
+y1 = min(max(y-o, 1), height);
+x2 = min(max(x+o, 1), width);
+y2 = min(max(y+o, 1), height);
+           
+e = II(y2 , x2) - II(y2 , x1) - II(y1, x2) + II(y1,x1);
 
         
 end
