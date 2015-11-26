@@ -66,7 +66,7 @@ for y = 2:h
 
     end
 end 
-
+imwrite(uint8(heatMap),'heatMap.png');
 fprintf('DOne');
 
 
