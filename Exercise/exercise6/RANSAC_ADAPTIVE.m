@@ -1,10 +1,13 @@
-function [ H] = RANSAC(X,Y,N,td)
+function [ H] = RANSAC_ADAPTIVE(X,Y,p,td,tset)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
+N = inf;
+sample_count = 1;
+done = 0;
 bestinliers = 0;
 
-for i=1:N
+while N > sample_count && ~done
     rndset = randi([1 size(X,2)],1,4);
     H = DLT(X(:,rndset),Y(:,rndset));
     X1_dash = H*X;
@@ -13,6 +16,12 @@ for i=1:N
     if sum(inliers)>sum(bestinliers)
     	bestinliers=inliers;
     end
+    if sum(inliers)>=tset
+        done=1;
+    end
+    epsilon=1-sum(inliers)/numel(inliers);
+    N=round(log(1-p)/log(1-(1-epsilon)^4));
+    sample_count=sample_count+1;
 end
 H = DLT(X(:,bestinliers),Y(:,bestinliers));
 end

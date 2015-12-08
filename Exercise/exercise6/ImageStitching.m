@@ -22,8 +22,12 @@ X1 = f1(1:2,matches(1, :));
 X1 = [ X1; ones(1, size(X1,2))];
 X2 = f2(1:2,matches(2, :));
 X2 = [ X2; ones(1, size(X2,2))];
-H = RANSAC(X1,X2,0.8,1,70);
 
+%p=0.8; td = 1; tset=70;
+%H = RANSAC_ADAPTIVE(X1,X2,p,td,tset);
+
+N=100; td = 1;
+H = RANSAC(X1,X2,N,td);
 
 T = maketform('projective', H');
 
