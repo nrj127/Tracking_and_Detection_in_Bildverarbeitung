@@ -24,6 +24,6 @@ while N > sample_count && ~done
     N=round(log(1-p)/log(1-(1-epsilon)^4));
     sample_count=sample_count+1;
 end
-H = DLT(X(:,bestinliers),Y(:,bestinliers))
+H = DLT(X(:,bestinliers),Y(:,bestinliers));
 end
 
