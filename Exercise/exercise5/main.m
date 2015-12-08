@@ -21,11 +21,12 @@ for y = 2:h
             yOff0 = y0{1,treeIndex}(idx,1);
             xOff1 = x1{1,treeIndex}(idx,1);
             yOff1 = y1{1,treeIndex}(idx,1);
-            z = z0{1,treeIndex}(idx,1);
+            Z0 = z0{1,treeIndex}(idx,1);
+            Z1 = z1{1,treeIndex}(idx,1);
             sb= s{1,treeIndex}(idx,1);
 
-            e0 = b(II_b, II_g, II_r , x + xOff0 , y + yOff0 , z , sb, w , h);
-            e1 = b(II_b, II_g, II_r , x + xOff1 , y + yOff1 , z , sb, w , h);
+            e0 = b(II_b, II_g, II_r , x + xOff0 , y + yOff0 , Z0 , sb, w , h);
+            e1 = b(II_b, II_g, II_r , x + xOff1 , y + yOff1 , Z1 , sb, w , h);
 
             eval = e0-e1;
 
