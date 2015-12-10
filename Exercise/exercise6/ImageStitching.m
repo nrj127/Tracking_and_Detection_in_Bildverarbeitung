@@ -1,5 +1,5 @@
 
-run('C:/vlfeat/toolbox/vl_setup')
+run('toolbox/vl_setup')
 
 im1 = imread('box.pgm');
 im2 = imread('scene.pgm');
@@ -27,7 +27,8 @@ X2 = [ X2; ones(1, size(X2,2))];
 %H = RANSAC_ADAPTIVE(X1,X2,p,td,tset);
 
 N=100; td = 1;
-H = RANSAC(X1,X2,N,td);
+[H,X6,X7] = RANSAC(X1,X2,N,td);
+
 
 T = maketform('projective', H');
 
@@ -47,4 +48,24 @@ figure, imshow(uint8(im2))
 title('Image 2')
 figure, imshow(uint8(stitchedImg))
 title('Stitched Images')
+
+
+X3 = f1(1:2,matches(1, :))';
+X4 = f2(1:2,matches(2, :))';
+
+figure(10)
+%subplot(3,1,1)
+showMatchedFeatures(im1,im2,X6(1:2,:)',X7(1:2,:)','montage');
+title('matching RANSAC')
+
+
+
+p=0.8; td = 1; tset=70;
+[H,X7,X8] = RANSAC_ADAPTIVE(X1,X2,p,td,tset);
+
+
+figure(11)
+subplot(3,1,1)
+showMatchedFeatures(im1,im2,X7(1:2,:)',X8(1:2,:)','montage');
+title('matching Adaptive RANSAC')
 
