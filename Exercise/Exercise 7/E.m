@@ -6,6 +6,6 @@ p = R*M;
 p = p ./ [p(3,:); p(3,:); p(3,:)];
 T = repmat(T,1,size(p,2));
 energy = norm( A*( p + T) - m);
-
+%energy = energy^2;
 end
 

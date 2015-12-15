@@ -63,7 +63,7 @@ for i = 1:length(fileList(:,1))
     %x0 = zeros(size([R,t]));
     inputs = [R,t];
     func = @(inputs) E(inputs(:,1:3),inputs(:,4),A,Mi,mi);
-    [x,value] = fminsearch(func, zeros(3,4) );
+    [x,value] = fminsearch(func, [R,t] );
     R = x(:, 1:3);
     t = x(:,4);
     
@@ -72,8 +72,6 @@ end
 
 %TODO
 figure;
-for i = 1:length(fileList(:,1))
-    plot3(camLoc(1,i),camLoc(2,i),camLoc(3,i),'--','color' , 'r');
-    hold on
-end
-hold off
+plot3(camLoc(1,:),camLoc(2,:),camLoc(3,:))
+title('Output Trajectory')
+print( 'Trajectory' , '-dpng') ;
