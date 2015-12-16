@@ -1,11 +1,17 @@
 
 close all
-run('C:/vlfeat/toolbox/vl_setup')
+run('toolbox/vl_setup')
 
 cd images;
 fileList = ls('*.png');
 cd ..
 fileList = strcat('images/',fileList);
+
+
+
+
+
+
 
 
 %initial pose
@@ -18,7 +24,7 @@ A = [472.3 0.64 329.0;
      0 0 1];
  
 % setting m and M
-I0 = imread('images\0000.png');
+I0 = imread('images/0000.png');
 
 if(size(I0,3) >=3)
     I0 = rgb2gray(I0);
@@ -61,9 +67,13 @@ for i = 1:length(fileList(:,1))
     close all
 
     %x0 = zeros(size([R,t]));
-    inputs = [R,t];
-    func = @(inputs) E(inputs(:,1:3),inputs(:,4),A,Mi,mi);
-    [x,value] = fminsearch(func, [R,t] );
+ %   inputs = [R,t];
+ %   func = @(inputs) E(inputs(:,1:3),inputs(:,4),A,Mi,mi);
+ %   [x,value] = fminsearch(func, [R,t] );
+    
+    
+    
+    
     R = x(:, 1:3);
     t = x(:,4);
     
