@@ -1,4 +1,4 @@
-function [H, X1, Y1] = RANSAC_ADAPTIVE(X,Y,p,td,tset)
+function [H, bestinliers] = RANSAC_ADAPTIVE(X,Y,p,td,tset)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -25,7 +25,6 @@ while N > sample_count && ~done
 end
 H = DLT(X(:,bestinliers),Y(:,bestinliers));
 
-X1 = X(:,bestinliers);
-Y1 = Y(:,bestinliers);
+
 end
 
