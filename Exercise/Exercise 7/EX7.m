@@ -1,7 +1,8 @@
 
 close all
 clear all
-run('C:/vlfeat/toolbox/vl_setup')
+%run('C:/vlfeat/toolbox/vl_setup')
+run('toolbox/vl_setup')
 
 cd images;
 fileList = ls('*.png');
@@ -18,7 +19,7 @@ A = [472.3 0.64 329.0;
      0 0 1];
  
 % setting m and M
-I0 = imread('images\0000.png');
+I0 = imread('images/0000.png');
 
 if(size(I0,3) >=3)
     I0 = rgb2gray(I0);
