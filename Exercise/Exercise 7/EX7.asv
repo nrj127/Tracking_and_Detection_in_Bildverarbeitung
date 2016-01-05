@@ -1,8 +1,7 @@
 
 close all
 clear all
-%run('C:/vlfeat/toolbox/vl_setup')
-run('toolbox/vl_setup')
+run('C:/vlfeat/toolbox/vl_setup')
 
 cd images;
 fileList = ls('*.png');
@@ -19,7 +18,7 @@ A = [472.3 0.64 329.0;
      0 0 1];
  
 % setting m and M
-I0 = imread('images/0000.png');
+I0 = imread('images\0000.png');
 
 if(size(I0,3) >=3)
     I0 = rgb2gray(I0);
@@ -38,21 +37,12 @@ M = inv(A)*pointsI0;
 %Array for the location of the camera
 camLoc = zeros(3,length(fileList(:,1)));
 
-%Parameterization
-%method = 'euler';
-method = 'quaternions';
+%Euler Angles parameterization
+alpha = 0;
+beta = 0;
+gamma = 0;
 
-if(strcmp(method , 'euler') == 1)
-    alpha = 0;
-    beta = 0;
-    gamma = 0;
-elseif(strcmp(method , 'quaternions') == 1)
-    w = 1;
-    x = 0;
-    y = 0;
-    z = 0;
-    
-end
+
 for i = 1:length(fileList(:,1))
     I = imread(fileList(i,:));
     fileList(i,:)
@@ -82,10 +72,10 @@ for i = 1:length(fileList(:,1))
     %print(strcat('matches\I0-I', num2str(i-1) ), '-dpng')
     %close all
 
-    if(strcmp(method , 'euler') == 1)
+    if(method == 'euler')
         % First 3 for rotation (Euler), next 3 for translation.
         params = [ alpha;beta;gamma; t ];
-        func = @(params)E(params,A,Mi,mi,method);
+        func = @(params)E(params,A,Mi,mi);
         options = optimset('MaxIter', 10000000000);
         [outParams,value] = fminsearch(func, [ alpha;beta;gamma; t ] , options );
 
@@ -98,24 +88,28 @@ for i = 1:length(fileList(:,1))
 
         R = RZ * RY * RX;
         t = outParams(4:6);
-    
-    elseif (strcmp(method , 'quaternions') == 1)
-        params = [ x;y;z;w; t ];
-        func = @(params) E(params,A,Mi,mi,method);
-        options = optimset('MaxIter', 10000000000,'MaxFunEvals' , 10000000);
-        [outParams,value] = fminsearch(func, [ x;y;z;w; t ] , options );
-        
-        x = outParams(1);
-        y = outParams(2);
-        z = outParams(3);
-        w = outParams(4);
-        
-        R = RotationMatrix( [w;x;y;z], 'quaternion');
-        R = R.matrix;
-        t = outParams(5:7);
     end
+     if method == 'quaternions'
+        params = [ x;y;z;w; t ];
+        func = @(params)E(params,A,Mi,mi);
+        options = optimset('MaxIter', 10000000000);
+        [outParams,value] = fminsearch(func, [ alpha;beta;gamma; t ] , options );
+        n = w * w + x * x + y * y + z * z
+        if n == 0
+            s = 0;
+        else 2 / n
+        wx = s * w * x; wy = s * w * y; wz = s * w * z;
+        xx = s * x * x; xy = s * x * y; xz = s * x * z;
+        yy = s * y * y; yz = s * y * z; zz = s * z * z;
 
-     camLoc(:,i) = -R'*t;
+        [ 1 - (yy + zz)         xy - wz          xz + wy  ]
+        [      xy + wz     1 - (xx + zz)         yz - wx  ]
+        [      xz - wy          yz + wx     1 - (xx + yy) ]  
+        end
+    if method == 'axis'
+        a
+    end
+            camLoc(:,i) = -R'*t;
 end
 
 %TODO
