@@ -1,30 +1,43 @@
 clear all;
+close all;
 
-data1 = load('data1.mat')
-data2 = load('data2.mat')
-data3 = load('data3.mat')
-classifier_data = load('Classifiers.mat')
+data = load('data3.mat');
+data = data.dat;
 
-data1 = data1.dat;
-data2 = data2.dat;
-data3 = data3.dat;
-clf = classifier_data.classifiers;
+n_classifier = 250;
 
-
-class_label = data1(:,3);
-training_set = data1(:,1:2);
-m = size(training_set,1);
-
-% plot 
+% Training data
+samples = data( : , 1:2);
+labels = data(:,3);
 
 
-first_class_index = find(class_label == -1);
-second_class_index = find(class_label == 1);
+negitiveSamples = samples(labels == -1,:);
+positiveSamples = samples(labels == 1,:);
 
-first_class_elements = training_set(first_class_index,:);
-second_class_elements = training_set(second_class_index,:);
+% Show the data
+figure, subplot(2,2,1), hold on; axis equal;
+plot(negitiveSamples(:, 1), negitiveSamples(:, 2), 'r.');
+plot(positiveSamples(:, 1), positiveSamples(:, 2), 'b.');
+title('Training Data');
 
-figure, hold on;
+%errors = zeros(n_classifier,1);
 
-plot(first_class_elements(:, 1), first_class_elements(:, 2), 'ro');
-plot(second_class_elements(:, 1), second_class_elements(:, 2), 'bo');
+% Use Adaboost to train n_classifier weak classifiers
+obj = AdaboostClassifier();
+
+obj.train(samples,labels,n_classifier);
+
+% Test using the weak classifiers
+[errors , testLabels] = test(obj, samples , labels);
+estPositive = samples(testLabels == 1 , :);
+estNegitive = samples(testLabels == -1 , :);
+
+subplot(2,2,3), plot(errors); title('Error versus number of classifiers');
+
+
+% Show classified data
+subplot(2,2,4), hold on
+plot(estPositive(:,1),estPositive(:,2),'b.');
+plot(estNegitive(:,1),estNegitive(:,2),'r.');
+axis equal;
+title('Classification with adaboost');
