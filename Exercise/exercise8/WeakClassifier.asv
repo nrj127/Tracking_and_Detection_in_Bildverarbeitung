@@ -35,9 +35,11 @@ classdef WeakClassifier < handle
             dataMatrix = [feature labels weights];
             dataMatrix = sortrows(dataMatrix, 1);
             
+
             total_positive_weights = sum(weights(labels == 1));
             total_negitive_weights = sum(weights(labels == -1));
 
+            
             stepwise_positive_weights = cumsum(dataMatrix(:, 3) .* (dataMatrix(:, 2) == 1));
             stepwise_negitive_weights = cumsum(dataMatrix(:, 3) .* (dataMatrix(:, 2) == -1));
             
@@ -65,9 +67,8 @@ classdef WeakClassifier < handle
             else
                 labels = samples(:, obj.dimension) < obj.threshold;
             end
-            %labels(labels >0) = 1;
-            %labels(labels <=0)= -1;
-            labels = -1 + 2 * labels;
+            labels(labels >0) = 1;
+            labels(labels <=0)= -1; + 2 * labels;
         end
     end
 end

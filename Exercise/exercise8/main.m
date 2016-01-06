@@ -28,7 +28,7 @@ obj = AdaboostClassifier();
 obj.train(samples,labels,n_classifier);
 
 % Test using the weak classifiers
-[errors , testLabels] = test(obj, samples , labels);
+[errors , testLabels] = obj.test(samples , labels);
 estPositive = samples(testLabels == 1 , :);
 estNegitive = samples(testLabels == -1 , :);
 
