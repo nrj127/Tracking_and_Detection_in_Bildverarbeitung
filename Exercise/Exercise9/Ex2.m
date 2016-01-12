@@ -143,8 +143,15 @@ for n = 1:n_images
     initial_parameter = current_parameter;
     gridpoints = gridpositions;
 end
-
-
+%% To save the video file of the result
+v = VideoWriter('linearTracker.avi');
+open(v)
+for i = 1:200
+img_name = sprintf('results/%03d.jpg', i);
+I = imread(img_name);
+writeVideo(v,I);
+end
+close(v)
 % plot and see if it works
 % image_handler = imshow(uint8(current_frame));
 % hold on;
