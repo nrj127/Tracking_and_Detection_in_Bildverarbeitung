@@ -42,11 +42,16 @@ function [ original_intensities, warped_intensities, displacement_vector ] = ran
 
     original_intensities = zeros(n_elements, 1);
     warped_intensities = zeros(n_elements, 1);
-
+    [w,h] = size(img);
     for coordinate = 1:n_elements
-
-        original_intensities(coordinate) =  img(round(grid_coords(2, coordinate)), round(grid_coords(1, coordinate)));
-        warped_intensities(coordinate) =  img(round(back_warp_coords(2, coordinate)), round(back_warp_coords(1, coordinate)));
+        x = min(   max(round(grid_coords(2, coordinate))  ,1)  ,w);
+        y = min(   max(round(grid_coords(1, coordinate))  ,1)  ,h);
+        original_intensities(coordinate) =  img(x,y);
+        
+        x = min(   max(round(back_warp_coords(2, coordinate))  ,1)  ,w);
+        y = min(   max(round(back_warp_coords(1, coordinate))  ,1)  ,h);
+        
+        warped_intensities(coordinate) =  img(x,y );
     end
 
     displacement_vector = reshape(rectangle_random_values, [], 1);
