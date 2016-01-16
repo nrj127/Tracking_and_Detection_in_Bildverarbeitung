@@ -1,7 +1,7 @@
 clear all;
 close all;
 
-data = load('data3.mat');
+data = load('data1.mat');
 data = data.dat;
 
 n_classifier = 250;

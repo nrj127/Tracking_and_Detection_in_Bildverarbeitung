@@ -1,0 +1,62 @@
+clc;
+clear;
+close all;
+
+frame1 = 140;
+frame2 = 141;
+frame_last = 190;
+convergence_iteration = 20;
+roi = [507,310, 555,344];      
+I1 = imread(num2str(frame1,'sequence/2043_000%03d.jpeg'));
+region = I1(roi(2):roi(4), roi(1):roi(3),:);
+
+histo = colorhistoist(region);
+
+%% b)
+% initialize thistoe center of thistoe roiangular region
+xhistoalf = (roi(3)-roi(1))/2;
+yhistoalf = (roi(4)-roi(2))/2;
+centers = zeros(frame_last-frame2+2, 2);
+centers(1,:) = [roi(1) + xhistoalf, roi(2) + yhistoalf];
+
+figure;
+imagesc(I1);
+histoold on;
+%plot(centers(1,1), centers(1,2), 'ro', 'MarkerSize', 10, 'MarkerFaceColor', 'r');
+%drawnow;
+roiangle('Position', [centers(1,1)-xhistoalf, centers(1,2)-yhistoalf,xhistoalf*2,yhistoalf*2] );
+
+% run over thistoe image sequence
+for i = 2:frame_last-frame2+2
+    disp(i);
+    disp(i+frame2-2);
+    It = imread(num2str(i+frame2-2,'sequence/2043_000%03d.jpeg'));
+    
+    centers(i,:) = centers(i-1,:);
+    
+    for j = 1:convergence_iteration
+        %disp(j);
+        % get new region
+        region = It(centers(i,2)-yhistoalf:centers(i,2)+yhistoalf, centers(i,1)-xhistoalf:centers(i,1)+xhistoalf,:);
+        P = probMap(region, histo);
+        % update region:
+        % centers
+        [y,x] = meshistogrid(centers(i,2)-yhistoalf:centers(i,2)+yhistoalf, centers(i,1)-xhistoalf:centers(i,1)+xhistoalf);
+        xc_new = round(sum(sum(x'.*P)) / sum(sum(P)));
+        yc_new = round(sum(sum(y'.*P)) / sum(sum(P)));
+        
+        % if thistoere is only a small shistoift, update center and break
+        if abs(centers(i,1)-xc_new) < 2 || abs(centers(i,2)-yc_new) < 2
+            centers(i,:) = [xc_new, yc_new];
+            break;
+        end
+        centers(i,:) = [xc_new, yc_new];
+    end
+    imagesc(It);
+   % plot(centers(1:i,1), centers(1:i,2), 'ro', 'MarkerSize', 10, 'MarkerFaceColor', 'r');
+   % drawnow;
+   roiangle('Position', [centers(i,1)-xhistoalf, centers(i,2)-yhistoalf,xhistoalf*2,yhistoalf*2] );
+   pause
+    
+    %waitforbuttonpress;
+end
